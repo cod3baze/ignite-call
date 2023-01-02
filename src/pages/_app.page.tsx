@@ -1,8 +1,15 @@
 import type { AppProps } from "next/app";
+import { Toaster } from "react-hot-toast";
+
 import { globalStyles } from "../styles/globals";
 
 globalStyles();
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <Component {...pageProps} />
+      <Toaster />
+    </>
+  );
 }
