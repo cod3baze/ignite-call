@@ -48,12 +48,15 @@ export default function Register() {
         username,
       });
     } catch (error: any) {
+      if (error?.response?.data?.message) {
+        toast.error(error.response.data.message, {
+          style: {
+            font: "normal 1rem 'Roboto', Segoe-ui, sans-serif",
+          },
+        });
+      }
+
       console.error(error);
-      toast.error(error?.message, {
-        style: {
-          font: "normal 1rem 'Roboto', Segoe-ui, sans-serif",
-        },
-      });
     }
   }
 
