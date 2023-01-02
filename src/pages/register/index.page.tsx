@@ -47,6 +47,8 @@ export default function Register() {
         name,
         username,
       });
+
+      await router.push("/register/connect-calendar");
     } catch (error: any) {
       if (error?.response?.data?.message) {
         toast.error(error.response.data.message, {
@@ -54,6 +56,7 @@ export default function Register() {
             font: "normal 1rem 'Roboto', Segoe-ui, sans-serif",
           },
         });
+        return;
       }
 
       console.error(error);
