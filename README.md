@@ -12,3 +12,9 @@
 | command                  | desc                                   |
 | ------------------------ | -------------------------------------- |
 | `npx prisma migrate dev` | verifica as ultimas mudanças e executa |
+
+## Authentication
+
+- OAuth
+
+  - formas de conceder permissões de acesso aos recursos para algum outro provider
