@@ -1,12 +1,14 @@
 import { useRouter } from "next/router";
 import { Heading, MultiStep, Text, Button } from "@ignite-ui/react";
 import { ArrowRight } from "phosphor-react";
+import { signIn, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 
 import { Container, Header } from "../styles";
 import { ConnectBox, ConnectItem } from "./styles";
 
 export default function ConnectCalendar() {
+  const session = useSession();
   const router = useRouter();
 
   async function handleRegister() {
@@ -40,7 +42,11 @@ export default function ConnectCalendar() {
         <ConnectItem>
           <Text>Google Calendar</Text>
 
-          <Button variant="secondary" size="sm">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => signIn("google")}
+          >
             Conectar
             <ArrowRight />
           </Button>
@@ -49,6 +55,8 @@ export default function ConnectCalendar() {
         <Button type="submit" disabled>
           Proximo passo <ArrowRight />
         </Button>
+
+        {JSON.stringify(session.data)}
       </ConnectBox>
     </Container>
   );
