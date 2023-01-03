@@ -18,3 +18,7 @@
 - OAuth
 
   - formas de conceder permissões de acesso aos recursos para algum outro provider
+
+- adapters
+
+  - forma do Next-auth persistir/comunicar-se com o banco de dados
