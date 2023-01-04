@@ -24,6 +24,7 @@ import {
   FormError,
 } from "./styles";
 import { getWeekDays, convertTimeStringToMinutes } from "../../../utils";
+import { api } from "../../../lib/axios";
 
 const timeIntervalsFormSchema = z.object({
   intervals: z
@@ -135,9 +136,9 @@ export default function TimeIntervals() {
   const router = useRouter();
 
   async function handleSetTimeIntervals(data: any) {
-    const formData = data as TimeIntervalsFormOutput;
+    const { intervals } = data as TimeIntervalsFormOutput;
     try {
-      console.log(data);
+      await api.post("/users/time-intervals", { intervals });
     } catch (e: any) {
       toast.error(e?.message);
     }
