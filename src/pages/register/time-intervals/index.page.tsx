@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm, Controller } from "react-hook-form";
 import {
   Heading,
@@ -20,10 +21,28 @@ import {
   IntervalInputs,
   IntervalItem,
   IntervalsContainer,
+  FormError,
 } from "./styles";
 import { getWeekDays } from "../../../utils/get-week-days";
 
-const timeIntervalsFormSchema = z.object({});
+const timeIntervalsFormSchema = z.object({
+  intervals: z
+    .array(
+      z.object({
+        weekDay: z.number().min(0).max(6),
+        enabled: z.boolean(),
+        startTime: z.string(),
+        endTime: z.string(),
+      })
+    )
+    .length(7)
+    .transform((intervals) => intervals.filter((interval) => interval.enabled))
+    .refine((intervals) => intervals.length > 0, {
+      message: "Você precisa selecionar pelo menos um dia da semana!",
+    }),
+});
+
+type TimeIntervalsFormData = z.infer<typeof timeIntervalsFormSchema>;
 
 export default function TimeIntervals() {
   const {
@@ -33,6 +52,7 @@ export default function TimeIntervals() {
     formState: { isSubmitting, errors },
     watch,
   } = useForm({
+    resolver: zodResolver(timeIntervalsFormSchema),
     defaultValues: {
       intervals: [
         {
@@ -92,8 +112,9 @@ export default function TimeIntervals() {
 
   const router = useRouter();
 
-  async function handleSetTimeIntervals() {
+  async function handleSetTimeIntervals(data: TimeIntervalsFormData) {
     try {
+      console.log(data);
     } catch (e: any) {
       toast.error(e?.message);
     }
@@ -153,6 +174,10 @@ export default function TimeIntervals() {
             );
           })}
         </IntervalsContainer>
+
+        {errors.intervals && (
+          <FormError size="sm">{errors.intervals.message}</FormError>
+        )}
 
         <Button type="submit" disabled={isSubmitting}>
           Próximo passo <ArrowRight />
