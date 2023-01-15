@@ -140,7 +140,16 @@ export default function TimeIntervals() {
     try {
       await api.post("/users/time-intervals", { intervals });
     } catch (e: any) {
-      toast.error(e?.message);
+      if (e?.response?.data?.message) {
+        toast.error(e.response.data.message, {
+          style: {
+            font: "normal 1rem 'Roboto', Segoe-ui, sans-serif",
+          },
+        });
+        return;
+      }
+
+      console.error(e);
     }
   }
 
