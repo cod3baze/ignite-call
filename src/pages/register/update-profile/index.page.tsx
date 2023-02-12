@@ -3,15 +3,16 @@ import {
   Heading,
   MultiStep,
   Text,
-  TextInput,
   Button,
   TextArea,
+  Avatar,
 } from "@ignite-ui/react";
-import { ArrowRight } from "phosphor-react";
 import { z } from "zod";
+import { useSession } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { ArrowRight } from "phosphor-react";
 
 import { Container, Header } from "../styles";
 import { ProfileBox, FormAnnotation } from "./styles";
@@ -34,6 +35,8 @@ export default function UpdateProfilePage() {
   } = useForm<UpdateProfileData>({
     resolver: zodResolver(updateProfileSchema),
   });
+
+  const session = useSession();
 
   async function handleUpdateProfile({ image, bio }: UpdateProfileData) {
     try {
@@ -67,7 +70,10 @@ export default function UpdateProfilePage() {
       <ProfileBox as="form" onSubmit={handleSubmit(handleUpdateProfile)}>
         <label>
           <Text>Foto de perfil</Text>
-          <TextInput type="file" {...register("image")} />
+          <Avatar
+            src={session.data?.user.avatar_url}
+            alt={session.data?.user.name}
+          />
         </label>
 
         <label>
